@@ -49,6 +49,7 @@ NAMES = [
 
 FORBIDDEN_PAIRS = (
     ("Natália", "Sofia"),
+    ("Gustavo", "Sofia"),
 )
 
 FORBIDDEN_PAIRS = set(tuple(sorted(p)) for p in FORBIDDEN_PAIRS)
