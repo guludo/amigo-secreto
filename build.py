@@ -10,7 +10,7 @@ TEMPLATE = """\
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amigo Secreto 2023</title>
+    <title>Amigo Secreto</title>
     <style>
 body {{
 	display: flex;
