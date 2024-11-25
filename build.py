@@ -79,4 +79,4 @@ for i, j in enumerate(indices):
     a, b = NAMES[i], NAMES[j]
     key = "".join(chr(random.randrange(ord('a'), ord('z') + 1)) for _ in range(6))
     (build_dir / f"{key}.html").write_text(TEMPLATE.format(name=a, friend=b))
-    print(a, f"https://guludo.github.io/amigo-secreto-2023/build/{key}.html")
+    print(a, f"https://guludo.github.io/amigo-secreto/build/{key}.html")
