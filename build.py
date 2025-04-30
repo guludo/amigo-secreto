@@ -33,18 +33,27 @@ body {{
 """
 
 NAMES = [
-    "Gustavo",
-    "Natália",
-    "Sofia",
-    "Jonas",
-    "Rafaela",
-    "João",
     "Vera",
-    "Anna",
-    "Márcio",
+    "Karen",
+    "Solange",
+    "Taty",
+    "Catarina",
+    "Lilian",
+    "Renatinha",
+    "Carla",
+    "Janaína",
+    "Noemi",
+    "Renata",
+    "Rosi",
+    "Samantha",
+    "Silvania",
+    "Pra. Luciana",
+    "Jaíne",
+    "Juliana",
+    "Aline",
+    "Janaína Carvalho",
+    "Susy",
     "Lene",
-    "Mauro",
-    "Camila",
 ]
 
 FORBIDDEN_PAIRS = (
