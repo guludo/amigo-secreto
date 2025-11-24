@@ -33,60 +33,91 @@ body {{
 """
 
 NAMES = [
-    "Vera",
-    "Karen",
-    "Solange",
-    "Taty",
-    "Catarina",
-    "Lilian",
-    "Renatinha",
-    "Carla",
-    "Janaína",
-    "Noemi",
-    "Renata",
-    "Rosi",
-    "Samantha",
-    "Silvania",
-    "Pra. Luciana",
-    "Jaíne",
-    "Juliana",
-    "Aline",
-    "Janaína Carvalho",
-    "Susy",
+    "Jonas",
+    "Rafaela",
+    "Márcio",
     "Lene",
+    "Camila",
+    "Mauro",
+    "Vera",
+    "Anna",
+    "João",
+    "Gustavo",
+    "Natália",
+    "Letícia",
+    "Rafael",
+    "Sofia",
+    "Mila",
+    "Julia",
 ]
 
 FORBIDDEN_PAIRS = (
     ("Natália", "Sofia"),
     ("Gustavo", "Sofia"),
+    ("Natália", "Julia"),
+    ("Gustavo", "Julia"),
+    ("Letícia", "Mila"),
+    ("Rafael", "Mila"),
 )
 
 FORBIDDEN_PAIRS = set(tuple(sorted(p)) for p in FORBIDDEN_PAIRS)
 
-build_dir = pathlib.Path(__file__).parent / "build"
 
-try:
-    shutil.rmtree(build_dir)
-except FileNotFoundError:
-    pass
+class Shuffler:
+    def __init__(self, names, forbidden_pairs):
+        self.__names = list(names)
+        self.__forbidden_pairs = set(tuple(sorted(p)) for p in forbidden_pairs)
 
-build_dir.mkdir()
+        self.__validate_input()
+        self.__shuffle_names()
 
-indices = list(range(len(NAMES)))
-while True:
-    random.shuffle(indices)
-    for i, j in enumerate(indices):
-        if i == j:
-            break
+    def __validate_input(self):
+        all_names = set()
+        for name in self.__names:
+            if name in all_names:
+                raise Exception(f"duplicate name: {name}")
+            all_names.add(name)
 
-        a, b = tuple(sorted((NAMES[i], NAMES[j])))
-        if (a, b) in FORBIDDEN_PAIRS:
-            break
-    else:
-        break
+        names_from_forbidden = {
+            name
+            for pair in self.__forbidden_pairs
+            for name in pair
+        }
+        missing_names = names_from_forbidden - all_names
+        if missing_names:
+            raise Exception(f"names in forbidden pairs are missing in list of names: {missing_names}")
 
-for i, j in enumerate(indices):
-    a, b = NAMES[i], NAMES[j]
-    key = "".join(chr(random.randrange(ord('a'), ord('z') + 1)) for _ in range(6))
-    (build_dir / f"{key}.html").write_text(TEMPLATE.format(name=a, friend=b))
-    print(a, f"https://guludo.github.io/amigo-secreto/build/{key}.html")
+    def __shuffle_names(self):
+        indices = list(range(len(self.__names)))
+        while True:
+            random.shuffle(indices)
+            for i, j in enumerate(indices):
+                if i == j:
+                    break
+
+                a, b = tuple(sorted((self.__names[i], self.__names[j])))
+                if (a, b) in self.__forbidden_pairs:
+                    break
+            else:
+                break
+
+        self.__indices = indices
+
+    def dump(self, build_dir):
+        try:
+            shutil.rmtree(build_dir)
+        except FileNotFoundError:
+            pass
+
+        build_dir.mkdir()
+
+        for i, j in enumerate(self.__indices):
+            a, b = self.__names[i], self.__names[j]
+            key = "".join(chr(random.randrange(ord('a'), ord('z') + 1)) for _ in range(6))
+            (build_dir / f"{key}.html").write_text(TEMPLATE.format(name=a, friend=b))
+            print(a, f"https://guludo.github.io/amigo-secreto/build/{key}.html")
+
+
+if __name__ == "__main__":
+    build_dir = pathlib.Path(__file__).parent / "build"
+    Shuffler(NAMES, FORBIDDEN_PAIRS).dump(build_dir)
